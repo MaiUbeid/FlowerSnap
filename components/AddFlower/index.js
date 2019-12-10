@@ -81,7 +81,7 @@ class AddFlower extends Component {
       meaning,
       image
     });
-    this.props.navigation.navigate('Home');
+    this.props.navigation.navigate('Dashboard');
   };
 
   render() {
