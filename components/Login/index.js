@@ -18,7 +18,7 @@ class Login extends Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('AddFlower'))
+      .then(() => this.props.navigation.navigate('Dashboard'))
       .catch(error => this.setState({ errorMessage: error.message }));
   };
 

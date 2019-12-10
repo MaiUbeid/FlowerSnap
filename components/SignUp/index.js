@@ -21,19 +21,18 @@ class SignUp extends Component {
   };
 
   handleSignUp = () => {
-    const { email, password } = this.state;
+    const { email, username, password } = this.state;
     const db = firebase.firestore();
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
         db.collection('users').add({
-          email: text,
-          username: text,
-          password: text,
-          favourite: array
+          email,
+          username,
+          favourite: null
         });
-        this.props.navigation.navigate('AddFlower');
+        this.props.navigation.navigate('Dashboard');
       })
       .catch(error => this.setState({ errorMessage: error.message }));
   };
