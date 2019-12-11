@@ -81,7 +81,8 @@ class AddFlower extends Component {
       meaning,
       image
     });
-    this.props.navigation.navigate('Dashboard');
+    this.uploadImageAsync();
+    this.props.navigation.navigate('Home');
   };
 
   render() {
@@ -128,7 +129,6 @@ class AddFlower extends Component {
         <Button
           title="Add Flower"
           onPress={() => {
-            this.uploadImageAsync();
             this.handleSubmit();
           }}
         />
