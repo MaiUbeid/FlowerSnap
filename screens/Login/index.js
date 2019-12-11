@@ -5,7 +5,8 @@ import {
   TextInput,
   View,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from 'react-native';
 import firebase from '../../firebase';
 import 'firebase/auth';
@@ -18,7 +19,7 @@ class Login extends Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('Dashboard'))
+      .then(() => this.props.navigation.navigate('Home'))
       .catch(error => this.setState({ errorMessage: error.message }));
   };
 
@@ -27,14 +28,18 @@ class Login extends Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Home')}
+          onPress={() => this.props.navigation.navigate('Landing')}
         >
-          <Text>Flower Snap</Text>
+          <Image
+            style={styles.logo}
+            source={{ uri: 'https://i.imgur.com/mlc46Hj.png' }}
+          />
         </TouchableOpacity>
-        <Text>Login</Text>
+        <Text style={styles.heading}>Welcome Back!!</Text>
         {errorMessage && <Text style={{ color: 'red' }}>{errorMessage}</Text>}
         <TextInput
           placeholder="Enter email"
+          placeholderTextColor="gray"
           autoCapitalize="none"
           style={styles.textInput}
           value={email}
@@ -43,16 +48,28 @@ class Login extends Component {
         <TextInput
           secureTextEntry
           placeholder="Password"
+          placeholderTextColor="gray"
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={password => this.setState({ password })}
           value={password}
         />
-        <Button title="Login" onPress={this.handleLogin} />
-        <Button
-          title="Dont have an account? SignUp"
+        <TouchableOpacity style={styles.loginButton}>
+          <Button title="Login" onPress={this.handleLogin} color="#f25979" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.signup}
           onPress={() => this.props.navigation.navigate('SignUp')}
-        />
+        >
+          <Text style={{ color: '#FFFFFF' }}>
+            Don't have an account?
+            <Text style={{ fontWeight: 'bold', color: '#f25979' }}>
+              {' '}
+              SignUp
+            </Text>
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -62,14 +79,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#222222'
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: 20
+  },
+  heading: {
+    fontSize: 28,
+    color: '#f25979',
+    fontWeight: '700',
+    paddingBottom: 20
   },
   textInput: {
     height: 40,
-    width: '90%',
+    width: '80%',
     borderColor: 'gray',
+    color: '#FFFFFF',
     borderWidth: 1,
-    marginTop: 8
+    marginTop: 20,
+    padding: 10,
+    borderRadius: 10
+  },
+  loginButton: {
+    width: '80%',
+    paddingBottom: 10,
+    marginTop: 30,
+    borderRadius: 10
   }
 });
 

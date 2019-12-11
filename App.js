@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 
-import Home from './components/Home';
-import AppDrawerNavigator from './components/Dashboard';
-import Login from './components/Login';
-import SignUp from './components/SignUp';
-import AddFlower from './components/AddFlower';
+import Landing from './screens/Landing';
+import AppDrawerNavigator from './screens/Home';
+import Login from './screens/Login';
+import SignUp from './screens/SignUp';
+import AddFlower from './screens/AddFlower';
 
 const AppSwitchNavigator = createSwitchNavigator(
   {
-    Home: { screen: Home },
-    Dashboard: { screen: AppDrawerNavigator },
+    Landing: { screen: Landing },
+    Home: { screen: AppDrawerNavigator },
     Login: { screen: Login },
     SignUp: { screen: SignUp },
     AddFlower: { screen: AddFlower }
   },
   {
-    initialRouteName: 'Home'
+    initialRouteName: 'Landing'
   }
 );
 
