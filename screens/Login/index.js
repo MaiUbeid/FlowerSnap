@@ -36,7 +36,11 @@ class Login extends Component {
           />
         </TouchableOpacity>
         <Text style={styles.heading}>Welcome Back!!</Text>
-        {errorMessage && <Text style={{ color: 'red' }}>{errorMessage}</Text>}
+        {errorMessage && (
+          <Text style={{ color: 'red', paddingLeft: 40, paddingRight: 40 }}>
+            {errorMessage}
+          </Text>
+        )}
         <TextInput
           placeholder="Enter email"
           placeholderTextColor="gray"
