@@ -2,23 +2,27 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Button,
   Text,
   Image,
   ScrollView,
   TouchableOpacity
 } from 'react-native';
-import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import firebase from '../../firebase';
 import 'firebase/firestore';
 import 'firebase/storage';
+import 'firebase/auth';
+import AddFlower from '../AddFlower';
+import Logout from '../Logout';
 
 class Home extends Component {
   state = {
-    recentFlowers: []
+    recentFlowers: [],
+    active: false
   };
   async componentDidMount() {
     try {
@@ -39,14 +43,18 @@ class Home extends Component {
   }
 
   render() {
-    const { recentFlowers } = this.state;
+    const { recentFlowers, active } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('Home')}
           >
-            <EvilIcons name="navicon" size={38} />
+            <EvilIcons
+              name="navicon"
+              size={38}
+              onPress={() => this.props.navigation.openDrawer()}
+            />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Flower Snap</Text>
         </View>
@@ -55,13 +63,29 @@ class Home extends Component {
             <View style={styles.flowerItem} key={flower.id}>
               <Image style={styles.imageItem} source={{ uri: flower.image }} />
               <View style={styles.content}>
-                <Text style={styles.flowerContent}>Name: {flower.name}</Text>
-                <Text style={styles.flowerContent}>
-                  Description: {flower.description}
-                </Text>
-                <Text style={styles.flowerContent}>
-                  Means: {flower.meaning}
-                </Text>
+                <Text style={styles.contentTitle}>{flower.name}</Text>
+                {flower.description ? (
+                  <Text style={styles.description}>{flower.description}</Text>
+                ) : null}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  {flower.meaning ? (
+                    <Text style={styles.meaning}>{flower.meaning}</Text>
+                  ) : (
+                    <Text>None</Text>
+                  )}
+                  <Micon
+                    name="heart"
+                    size={24}
+                    color="#222222"
+                    style={active ? styles.btnActive : ''}
+                    // onPress={() => this.setState({ active: !active })}
+                  />
+                </View>
               </View>
             </View>
           ))}
@@ -95,6 +119,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     marginTop: 30,
+    marginBottom: 20,
     padding: 10
   },
   headerTitle: {
@@ -109,26 +134,98 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#888888',
     borderWidth: 1,
-    margin: 10,
-    shadowColor: '#777777'
+    margin: 10
   },
   content: {
     marginLeft: 15
+  },
+  contentTitle: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: '#333333'
+  },
+  description: {
+    width: 140,
+    fontSize: 12,
+    color: '#FFFFFF',
+    marginBottom: 5
+  },
+  meaning: {
+    color: '#FFFFFF',
+    backgroundColor: '#666666',
+    borderColor: '#666666',
+    borderWidth: 2,
+    borderRadius: 3,
+    padding: 3
   },
   flowerContent: {
     color: '#FFFFFF'
   },
   imageItem: {
-    width: 100,
-    height: 100
+    width: 120,
+    height: '100%'
   },
   addIcon: {
     textAlign: 'right'
+  },
+  btnActive: {
+    color: '#f25979'
   }
 });
 
-const AppDrawerNavigator = createDrawerNavigator({
-  Home: { screen: Home }
-});
+const CustomDrawerComponent = props => {
+  return (
+    <View>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 30
+        }}
+      >
+        <EvilIcons name="user" size={100} color="#f25979" />
+      </View>
+      <DrawerItems {...props} />
+    </View>
+  );
+};
+
+const AppDrawerNavigator = createDrawerNavigator(
+  {
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        drawerIcon: ({ tintColor }) => (
+          <Micon name="home" size={24} color={tintColor} />
+        )
+      }
+    },
+    AddFlower: {
+      screen: AddFlower,
+      navigationOptions: {
+        drawerIcon: ({ tintColor }) => (
+          <Ionicons name="ios-add-circle" size={24} color={tintColor} />
+        )
+      }
+    },
+    Logout: {
+      screen: Logout,
+      navigationOptions: {
+        drawerIcon: ({ tintColor }) => (
+          <Micon name="logout" size={24} color={tintColor} />
+        )
+      }
+    }
+  },
+  {
+    contentComponent: CustomDrawerComponent,
+    drawerBackgroundColor: '#222222',
+    contentOptions: {
+      activeTintColor: '#f25979',
+      inactiveTintColor: '#FFFFFF',
+      activeBackgroundColor: '#444444'
+    }
+  }
+);
 
 export default AppDrawerNavigator;

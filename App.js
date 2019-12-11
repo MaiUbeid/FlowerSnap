@@ -6,6 +6,8 @@ import AppDrawerNavigator from './screens/Home';
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
 import AddFlower from './screens/AddFlower';
+import Logout from './screens/Logout';
+import Favourite from './screens/Favourite';
 
 const AppSwitchNavigator = createSwitchNavigator(
   {
@@ -13,7 +15,9 @@ const AppSwitchNavigator = createSwitchNavigator(
     Home: { screen: AppDrawerNavigator },
     Login: { screen: Login },
     SignUp: { screen: SignUp },
-    AddFlower: { screen: AddFlower }
+    AddFlower: { screen: AddFlower },
+    Logout: { screen: Logout },
+    Favourite: { screen: Favourite }
   },
   {
     initialRouteName: 'Landing'
