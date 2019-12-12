@@ -40,7 +40,7 @@ class Logout extends Component {
       <View style={styles.container}>
         <TouchableOpacity style={styles.logoutButton}>
           <Button
-            color="f25979"
+            color="#f25979"
             title="Logout"
             onPress={() => {
               {

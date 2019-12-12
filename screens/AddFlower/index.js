@@ -67,7 +67,7 @@ class AddFlower extends Component {
   };
 
   handleSubmit = async () => {
-    const { name, description, meaning, image } = this.state;
+    const { name, description, meaning } = this.state;
     const db = firebase.firestore();
     const postedImage = await this.uploadImageAsync();
     await db.collection('Flower').add({
@@ -86,12 +86,6 @@ class AddFlower extends Component {
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate('Home')}
         >
-          <Micon name="arrow-back" size={24} style={{ color: '#FFFFFF' }} />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Home')}
-        >
           <Image
             style={styles.logo}
             source={{ uri: 'https://i.imgur.com/mlc46Hj.png' }}
@@ -101,12 +95,13 @@ class AddFlower extends Component {
         <Text style={styles.heading}>Add Flower </Text>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text style={{ color: '#FFFFFF' }}>upload image</Text>
-          <TouchableOpacity
-            style={styles.image__button}
-            onPress={() => this.selectPicture()}
-          >
-            <Ficon name="upload" size={26} color="#FFFFFF" />
+          <TouchableOpacity onPress={() => this.selectPicture()}>
+            <Ficon
+              name="upload"
+              size={26}
+              color="#FFFFFF"
+              style={styles.image__button}
+            />
           </TouchableOpacity>
         </View>
         {image ? <Image style={styles.image} source={{ uri: image }} /> : null}
@@ -201,6 +196,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#FFFFFF',
     margin: 20
+  },
+  image__button: {
+    backgroundColor: '#f25979',
+    padding: 5,
+    borderRadius: 20
   }
 });
 

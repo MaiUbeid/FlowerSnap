@@ -8,21 +8,22 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import firebase from '../../firebase';
 import 'firebase/firestore';
-import 'firebase/storage';
 import 'firebase/auth';
+
 import AddFlower from '../AddFlower';
 import Logout from '../Logout';
+import Favourite from '../Favourite';
 
 class Home extends Component {
   state = {
-    recentFlowers: [],
-    active: false
+    recentFlowers: []
   };
   async componentDidMount() {
     try {
@@ -42,8 +43,29 @@ class Home extends Component {
     } catch (error) {}
   }
 
+  addFavourite = async flowerId => {
+    let userId = null;
+    const db = firebase.firestore();
+    const currentUserId = await firebase.auth().currentUser.uid;
+    await db
+      .collection('users')
+      .where('userId', '==', currentUserId)
+      .onSnapshot(async docs => {
+        docs.forEach(doc => {
+          userId = doc.id;
+        });
+        await db
+          .collection('users')
+          .doc(userId)
+          .update({
+            favourite: flowerId
+          });
+        this.props.navigation.navigate('Favourite');
+      });
+  };
+
   render() {
-    const { recentFlowers, active } = this.state;
+    const { recentFlowers } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -82,8 +104,8 @@ class Home extends Component {
                     name="heart"
                     size={24}
                     color="#222222"
-                    style={active ? styles.btnActive : ''}
-                    // onPress={() => this.setState({ active: !active })}
+                    // style={flower.isActive ? styles.btnActive : ''}
+                    onPress={() => this.addFavourite(flower.id)}
                   />
                 </View>
               </View>
@@ -173,6 +195,40 @@ const styles = StyleSheet.create({
   }
 });
 
+const TabNavigator = createBottomTabNavigator(
+  {
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        tabBarLabel: 'Home',
+        tabBarIcon: ({ tintColor }) => (
+          <Micon name="home" color={tintColor} size={24} />
+        )
+      }
+    },
+    Favourite: {
+      screen: Favourite,
+      navigationOptions: {
+        tabBarLabel: 'Favourite',
+        tabBarIcon: ({ tintColor }) => (
+          <Micon name="heart" color={tintColor} size={24} />
+        )
+      }
+    }
+  },
+  {
+    swipeEnabled: true,
+    indicatorStyle: {
+      borderBottomColor: '#f25979',
+      borderBottomWidth: 2
+    },
+    tabBarOptions: {
+      activeTintColor: '#f25979',
+      inactiveTintColor: 'gray'
+    }
+  }
+);
+
 const CustomDrawerComponent = props => {
   return (
     <View>
@@ -193,10 +249,18 @@ const CustomDrawerComponent = props => {
 const AppDrawerNavigator = createDrawerNavigator(
   {
     Home: {
-      screen: Home,
+      screen: TabNavigator,
       navigationOptions: {
         drawerIcon: ({ tintColor }) => (
           <Micon name="home" size={24} color={tintColor} />
+        )
+      }
+    },
+    Favourite: {
+      screen: Favourite,
+      navigationOptions: {
+        drawerIcon: ({ tintColor }) => (
+          <Micon name="heart" size={24} color={tintColor} />
         )
       }
     },
