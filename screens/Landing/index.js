@@ -7,23 +7,12 @@ import {
   TouchableOpacity,
   Image
 } from 'react-native';
-import * as Font from 'expo-font';
 
 class Landing extends Component {
-  state = {
-    fontLoaded: false
-  };
-  async componentDidMount() {
-    await Font.loadAsync({
-      Satisfy: require('../../assets/fonts/Satisfy-Regular.ttf')
-    });
-    this.setState({ fontLoaded: true });
-  }
   render() {
-    const { fontLoaded } = this.state;
     return (
       <View style={styles.container}>
-        {fontLoaded ? <Text style={styles.heading}>Flower Snap</Text> : null}
+        <Text style={styles.heading}>Flower Snap</Text>
         <Image
           style={styles.logo}
           source={{ uri: 'https://i.imgur.com/mlc46Hj.png' }}
@@ -59,7 +48,6 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 32,
     color: '#f25979',
-    fontWeight: '700',
     paddingBottom: 20,
     fontFamily: 'Satisfy'
   },

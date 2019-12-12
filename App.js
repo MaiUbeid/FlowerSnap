@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import * as Font from 'expo-font';
 
 import Landing from './screens/Landing';
 import AppDrawerNavigator from './screens/Home';
@@ -27,6 +28,11 @@ const AppSwitchNavigator = createSwitchNavigator(
 const AppContainer = createAppContainer(AppSwitchNavigator);
 
 class App extends Component {
+  componentDidMount() {
+    Font.loadAsync({
+      'open-sans': require('./assets/fonts/OpenSans-Regular.ttf')
+    });
+  }
   render() {
     return <AppContainer />;
   }
