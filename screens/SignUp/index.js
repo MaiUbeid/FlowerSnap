@@ -21,10 +21,10 @@ class SignUp extends Component {
     errorMessage: null
   };
 
-  handleSignUp = () => {
+  handleSignUp = async () => {
     const { email, username, password } = this.state;
     const db = firebase.firestore();
-    firebase
+    await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
