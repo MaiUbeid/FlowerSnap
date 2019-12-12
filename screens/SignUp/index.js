@@ -103,7 +103,16 @@ class SignUp extends Component {
         >
           <Text style={{ color: '#FFFFFF' }}>
             Already have an account?
-            <Text style={{ fontWeight: 'bold', color: '#f25979' }}> Login</Text>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: '#f25979',
+                fontFamily: 'open-sans'
+              }}
+            >
+              {' '}
+              Login
+            </Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -126,8 +135,8 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 28,
     color: '#f25979',
-    fontWeight: '700',
-    paddingBottom: 20
+    paddingBottom: 20,
+    fontFamily: 'Satisfy'
   },
   textInput: {
     height: 40,
@@ -137,13 +146,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 20,
     padding: 10,
-    borderRadius: 10
+    borderRadius: 10,
+    fontFamily: 'open-sans'
   },
   signupButton: {
     width: '80%',
     paddingBottom: 10,
     marginTop: 30,
-    borderRadius: 10
+    borderRadius: 10,
+    fontFamily: 'open-sans'
   }
 });
 
